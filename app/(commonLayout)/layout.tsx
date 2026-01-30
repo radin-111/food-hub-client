@@ -9,20 +9,17 @@ export default function CommonLayout({
   const navigationData = [
     {
       title: "Home",
-      href: "#",
+      href: "/",
     },
     {
-      title: "Products",
-      href: "#",
+      title: "Meals",
+      href: "/meals",
     },
     {
-      title: "About Us",
-      href: "#",
-    },
-    {
-      title: "Contacts",
-      href: "#",
-    },
+      title: "Be a Provider",
+      href: "/be-a-provider",
+    }
+    
   ];
 
   return (

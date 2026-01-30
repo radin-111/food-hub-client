@@ -1,4 +1,4 @@
-"use client";
+
 
 import { MenuIcon } from "lucide-react";
 
@@ -13,6 +13,7 @@ import {
 
 import Logo from "@/components/shadcn-studio/logo";
 import Link from "next/link";
+import Session from "@/components/modules/user/session";
 
 
 type NavigationItem = {
@@ -20,36 +21,35 @@ type NavigationItem = {
   href: string;
 }[];
 
-const Navbar = ({ navigationData }: { navigationData: NavigationItem }) => {
+const Navbar =  ({
+  navigationData,
+}: {
+  navigationData: NavigationItem;
+}) => {
   
   return (
     <header className="bg-background sticky top-0 z-50">
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-8 px-4 py-2 sm:py-5 sm:px-6">
         <div className="text-muted-foreground flex flex-1 items-center gap-8 font-medium md:justify-center lg:gap-16">
-          <Link href="#" className="hover:text-primary max-md:hidden">
-            Home
-          </Link>
-          <Link href="#" className="hover:text-primary max-md:hidden">
-            Products
-          </Link>
           <Link href="#">
             <Logo className="text-foreground gap-3" />
           </Link>
           <Link href="#" className="hover:text-primary max-md:hidden">
-            About Us
+            Home
           </Link>
-          <Link href="#" className="hover:text-primary max-md:hidden">
-            Contacts
+          <Link href="/meals" className="hover:text-primary max-md:hidden">
+            Meals
+          </Link>
+          <Link
+            href="/be-a-provider"
+            className="hover:text-primary max-md:hidden"
+          >
+            Be a Provider
           </Link>
         </div>
 
         <div className="flex items-center gap-6">
-          <Button >
-            <Link href="/login">Login</Link>
-          </Button>
-          <Button variant="outline">
-            <Link href="/signup">Sign Up</Link>
-          </Button>
+          <Session/>
           <DropdownMenu>
             <DropdownMenuTrigger className="md:hidden" asChild>
               <Button variant="outline" size="icon">
