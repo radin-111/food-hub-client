@@ -1,5 +1,5 @@
 import logo from "../../public/image (3).jpg";
-
+import burger from "../../public/burger.avif"
 import { SignupForm } from "@/components/modules/authentication/signup-form"
 import Link from "next/link"
 import Image from "next/image"
@@ -21,11 +21,13 @@ export default function SignupPage() {
         </div>
       </div>
       <div className="bg-muted relative hidden lg:block">
-        {/* <img
-          src="/placeholder.svg"
+        <Image
+          width={500}
+          height={500}
+          src={burger}
           alt="Image"
           className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
-        /> */}
+        />
       </div>
     </div>
   )
