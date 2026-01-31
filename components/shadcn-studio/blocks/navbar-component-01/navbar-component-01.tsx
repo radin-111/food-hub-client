@@ -31,7 +31,7 @@ const Navbar =  ({
     <header className="bg-background sticky top-0 z-50">
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-8 px-4 py-2 sm:py-5 sm:px-6">
         <div className="text-muted-foreground flex flex-1 items-center gap-8 font-medium md:justify-center lg:gap-16">
-          <Link href="#">
+          <Link href="/">
             <Logo className="text-foreground gap-3" />
           </Link>
           <Link href="#" className="hover:text-primary max-md:hidden">

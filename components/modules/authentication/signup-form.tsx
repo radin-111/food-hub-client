@@ -51,7 +51,7 @@ export function SignupForm({
       onSubmit: formSchema,
     },
     onSubmit: async ({ value }: any) => {
-      const toastId = toast.loading("Logging in...");
+      const toastId = toast.loading("Signing up...");
 
       try {
         const { error } = await authClient.signUp.email({
@@ -193,7 +193,7 @@ export function SignupForm({
           }}
         />
         <Field>
-          <Button type="submit">Login</Button>
+          <Button type="submit">Sign up</Button>
         </Field>
         <Button variant="outline" type="button" onClick={() => googleSignIn()}>
           <FcGoogle />

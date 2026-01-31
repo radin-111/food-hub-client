@@ -1,4 +1,5 @@
 import Navbar from "@/components/shadcn-studio/blocks/navbar-component-01/navbar-component-01";
+import Footer from "@/components/ui/Footer";
 import React from "react";
 
 export default function CommonLayout({
@@ -26,6 +27,7 @@ export default function CommonLayout({
     <div>
       <Navbar navigationData={navigationData} />
       {children}
+      <Footer/>
     </div>
   );
 }

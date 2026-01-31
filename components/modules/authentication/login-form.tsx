@@ -18,9 +18,12 @@ import { env } from "@/env";
 import { useForm } from "@tanstack/react-form";
 import * as z from "zod";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 const formSchema = z.object({
   email: z.string().email("Enter a valid email address"),
-  password: z.string("Enter your password").min(8, "Password must be at least 8 characters long"),
+  password: z
+    .string("Enter your password")
+    .min(8, "Password must be at least 8 characters long"),
 });
 export function LoginForm({
   className,
@@ -32,6 +35,7 @@ export function LoginForm({
       callbackURL: env.NEXT_PUBLIC_FRONTEND_URL,
     });
   };
+  const router = useRouter();
 
   const form = useForm({
     defaultValues: {
@@ -45,19 +49,22 @@ export function LoginForm({
       const toastId = toast.loading("Logging in...");
 
       try {
-        const { error,data } = await authClient.signIn.email({
+        const { error, data } = await authClient.signIn.email({
           email: value.email,
           password: value.password,
         });
-        
+
         if (error?.status === 401) {
           toast.error("Invalid email or password", { id: toastId });
         } else {
-          if(data?.user?.emailVerified===false){
-            toast.error("Please verify your email before logging in", { id: toastId });
+          if (data?.user?.emailVerified === false) {
+            toast.error("Please verify your email before logging in", {
+              id: toastId,
+            });
             return;
           }
           toast.success("Logged in successfully", { id: toastId });
+          router.push("/");
         }
       } catch (error) {
         toast.error("Failed to login", { id: toastId });
