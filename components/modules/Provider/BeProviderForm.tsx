@@ -26,7 +26,7 @@ const providerSchema = z.object({
   website: z.string().url("Enter a valid URL").optional().or(z.literal("")),
   description: z.string().min(10, "Description must be at least 10 characters"),
 });
-
+type ProviderFormValues = z.infer<typeof providerSchema>;
 export function BeProviderForm({
   className,
   ...props
@@ -45,9 +45,10 @@ export function BeProviderForm({
       phoneNumber: "",
       website: "",
       description: "",
-    },
+    } as ProviderFormValues,
+    
     validators: {
-      onSubmit: providerSchema,
+      onChange: providerSchema,
     },
     onSubmit: async ({ value }) => {
       if (!userId) {
@@ -89,16 +90,14 @@ export function BeProviderForm({
       }}
       className={cn(
         "w-full max-w-lg sm:max-w-2xl lg:max-w-3xl mx-auto px-4 sm:px-6 lg:px-0",
-        className
+        className,
       )}
       {...props}
     >
       <FieldGroup className="space-y-6">
         {/* Header */}
         <div className="text-center space-y-2">
-          <h1 className="text-xl sm:text-2xl font-bold">
-            Become a Provider
-          </h1>
+          <h1 className="text-xl sm:text-2xl font-bold">Become a Provider</h1>
           <p className="text-sm sm:text-base text-muted-foreground">
             Register your restaurant and start selling on FoodHub
           </p>
@@ -114,21 +113,14 @@ export function BeProviderForm({
                 field.state.meta.isTouched && !field.state.meta.isValid;
               return (
                 <Field>
-                  <FieldLabel htmlFor={field.name}>
-                    Restaurant Name
-                  </FieldLabel>
+                  <FieldLabel htmlFor={field.name}>Restaurant Name</FieldLabel>
                   <Input
                     id={field.name}
                     className="h-11 text-base"
-                    placeholder="Enter restaurant name"
                     value={field.state.value}
-                    onChange={(e) =>
-                      field.handleChange(e.target.value)
-                    }
+                    onChange={(e) => field.handleChange(e.target.value)}
                   />
-                  {isInvalid && (
-                    <FieldError errors={field.state.meta.errors} />
-                  )}
+                  {isInvalid && <FieldError errors={field.state.meta.errors} />}
                 </Field>
               );
             }}
@@ -142,22 +134,14 @@ export function BeProviderForm({
                 field.state.meta.isTouched && !field.state.meta.isValid;
               return (
                 <Field>
-                  <FieldLabel htmlFor={field.name}>
-                    Phone Number
-                  </FieldLabel>
+                  <FieldLabel htmlFor={field.name}>Phone Number</FieldLabel>
                   <Input
                     id={field.name}
-                    placeholder="Enter phone number"
                     className="h-11 text-base"
-                    type="text"
                     value={field.state.value}
-                    onChange={(e) =>
-                      field.handleChange(e.target.value)
-                    }
+                    onChange={(e) => field.handleChange(e.target.value)}
                   />
-                  {isInvalid && (
-                    <FieldError errors={field.state.meta.errors} />
-                  )}
+                  {isInvalid && <FieldError errors={field.state.meta.errors} />}
                 </Field>
               );
             }}
@@ -174,16 +158,11 @@ export function BeProviderForm({
                   <FieldLabel htmlFor={field.name}>City</FieldLabel>
                   <Input
                     id={field.name}
-                    placeholder="Enter city"
                     className="h-11 text-base"
                     value={field.state.value}
-                    onChange={(e) =>
-                      field.handleChange(e.target.value)
-                    }
+                    onChange={(e) => field.handleChange(e.target.value)}
                   />
-                  {isInvalid && (
-                    <FieldError errors={field.state.meta.errors} />
-                  )}
+                  {isInvalid && <FieldError errors={field.state.meta.errors} />}
                 </Field>
               );
             }}
@@ -201,15 +180,10 @@ export function BeProviderForm({
                   <Input
                     id={field.name}
                     className="h-11 text-base"
-                    placeholder="Enter country"
                     value={field.state.value}
-                    onChange={(e) =>
-                      field.handleChange(e.target.value)
-                    }
+                    onChange={(e) => field.handleChange(e.target.value)}
                   />
-                  {isInvalid && (
-                    <FieldError errors={field.state.meta.errors} />
-                  )}
+                  {isInvalid && <FieldError errors={field.state.meta.errors} />}
                 </Field>
               );
             }}
@@ -223,21 +197,14 @@ export function BeProviderForm({
                 field.state.meta.isTouched && !field.state.meta.isValid;
               return (
                 <Field>
-                  <FieldLabel htmlFor={field.name}>
-                    Postal Code
-                  </FieldLabel>
+                  <FieldLabel htmlFor={field.name}>Postal Code</FieldLabel>
                   <Input
                     id={field.name}
                     className="h-11 text-base"
-                    placeholder="Enter postal code"
                     value={field.state.value}
-                    onChange={(e) =>
-                      field.handleChange(e.target.value)
-                    }
+                    onChange={(e) => field.handleChange(e.target.value)}
                   />
-                  {isInvalid && (
-                    <FieldError errors={field.state.meta.errors} />
-                  )}
+                  {isInvalid && <FieldError errors={field.state.meta.errors} />}
                 </Field>
               );
             }}
@@ -259,13 +226,9 @@ export function BeProviderForm({
                     className="h-11 text-base"
                     placeholder="https://example.com"
                     value={field.state.value}
-                    onChange={(e) =>
-                      field.handleChange(e.target.value)
-                    }
+                    onChange={(e) => field.handleChange(e.target.value)}
                   />
-                  {isInvalid && (
-                    <FieldError errors={field.state.meta.errors} />
-                  )}
+                  {isInvalid && <FieldError errors={field.state.meta.errors} />}
                 </Field>
               );
             }}
@@ -284,15 +247,10 @@ export function BeProviderForm({
                 <Input
                   id={field.name}
                   className="h-11 text-base"
-                  placeholder="Enter address"
                   value={field.state.value}
-                  onChange={(e) =>
-                    field.handleChange(e.target.value)
-                  }
+                  onChange={(e) => field.handleChange(e.target.value)}
                 />
-                {isInvalid && (
-                  <FieldError errors={field.state.meta.errors} />
-                )}
+                {isInvalid && <FieldError errors={field.state.meta.errors} />}
               </Field>
             );
           }}
@@ -306,22 +264,15 @@ export function BeProviderForm({
               field.state.meta.isTouched && !field.state.meta.isValid;
             return (
               <Field>
-                <FieldLabel htmlFor={field.name}>
-                  Description
-                </FieldLabel>
+                <FieldLabel htmlFor={field.name}>Description</FieldLabel>
                 <Textarea
                   id={field.name}
                   rows={4}
-                  placeholder="Enter description"
                   className="min-h-[120px] text-base"
                   value={field.state.value}
-                  onChange={(e) =>
-                    field.handleChange(e.target.value)
-                  }
+                  onChange={(e) => field.handleChange(e.target.value)}
                 />
-                {isInvalid && (
-                  <FieldError errors={field.state.meta.errors} />
-                )}
+                {isInvalid && <FieldError errors={field.state.meta.errors} />}
               </Field>
             );
           }}
