@@ -2,7 +2,7 @@ import { env } from "@/env";
 import { cookies } from "next/headers";
 
 const AUTH_URL = env.AUTH_URL;
-
+const BACKEND_URL = env.BACKEND_URL;
 export const userService = {
   getSession: async function () {
     try {
@@ -24,6 +24,16 @@ export const userService = {
       return { data: session, error: null };
     } catch (err) {
       console.error(err);
+      return { data: null, error: { message: "Something Went Wrong" } };
+    }
+  },
+  getUsers: async function (page: string) {
+    try {
+      const users = fetch(`${BACKEND_URL}/users?page=${page}`, {
+        cache: "no-store",
+      });
+      return users.then((res) => res.json());
+    } catch (err) {
       return { data: null, error: { message: "Something Went Wrong" } };
     }
   },
