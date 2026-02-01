@@ -12,31 +12,26 @@ import {
 } from "@/components/ui/sidebar";
 import Link from "next/link";
 import Image from "next/image";
+import { userRoutes } from "@/routes/all.routes";
+import { Button } from "./ui/button";
 
 // Sidebar links
-const routes = [
-  {
-    title: "Home",
-    url: "/",
-    icon: Home,
-  },
-  {
-    title: "Users",
-    url: "/users",
-    icon: Users,
-  },
-  {
-    title: "Settings",
-    url: "/settings",
-    icon: Settings,
-  },
+let routes:any = [
+ 
 ];
 
 export function AppSidebar({
   user,
   ...props
 }: { user?: any } & React.ComponentProps<typeof Sidebar>) {
-  
+  if(user?.role === 'ADMIN'){
+  routes = userRoutes.adminRoutes
+
+  }else if(user?.role === 'PROVIDER'){
+    routes = userRoutes.providerRoutes
+  }else{
+    routes = userRoutes.customerRoutes
+  }
   return (
     <Sidebar {...props}>
       {/* Profile section */}
@@ -58,12 +53,12 @@ export function AppSidebar({
 
       {/* Navigation */}
       <SidebarContent className="pt-2">
-        <SidebarMenu className="px-2">
-          {routes.map((item) => (
+        <SidebarMenu className="px-2 ">
+          {routes.map((item:any) => (
             <SidebarMenuItem key={item.title}>
               <SidebarMenuButton
                 asChild
-                className="flex items-center gap-3 rounded-md px-3 py-2 text-[15px] font-medium"
+                className="flex items-center gap-3 rounded-md px-3 py-2 text-[15px] font-medium my-2"
               >
                 <Link href={item.url}>
                   <item.icon className="h-4 w-4 shrink-0" />
@@ -72,6 +67,11 @@ export function AppSidebar({
               </SidebarMenuButton>
             </SidebarMenuItem>
           ))}
+          <div className="px-2 mt-10">
+            <Button variant="destructive" className="w-full">
+              Logout
+            </Button>
+          </div>
         </SidebarMenu>
       </SidebarContent>
 
