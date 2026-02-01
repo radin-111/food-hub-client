@@ -14,6 +14,7 @@ import {
 import Logo from "@/components/shadcn-studio/logo";
 import Link from "next/link";
 import Session from "@/components/modules/user/session";
+import RoleBaseRoutes from "@/components/modules/user/route";
 
 
 type NavigationItem = {
@@ -40,12 +41,7 @@ const Navbar =  ({
           <Link href="/meals" className="hover:text-primary max-md:hidden">
             Meals
           </Link>
-          <Link
-            href="/be-a-provider"
-            className="hover:text-primary max-md:hidden"
-          >
-            Be a Provider
-          </Link>
+          <RoleBaseRoutes />
         </div>
 
         <div className="flex items-center gap-6">

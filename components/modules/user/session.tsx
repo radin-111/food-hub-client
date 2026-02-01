@@ -4,11 +4,13 @@ import { authClient } from "@/lib/auth-client";
 import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React from "react";
 import Swal from "sweetalert2";
 
 
 export default function Session() {
+  const router = useRouter()
   const handleSignOut = () => {
     Swal.fire({
       title: "Are you sure?",
@@ -23,6 +25,8 @@ export default function Session() {
     }).then(async (result) => {
       if (result.isConfirmed) {
         await authClient.signOut();
+        router.push("/");
+        window.location.reload();
       }
     });
   };

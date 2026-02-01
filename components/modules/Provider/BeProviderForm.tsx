@@ -35,6 +35,7 @@ export function BeProviderForm({
   const userId = session.data?.user?.id ?? null;
   const backendUrl = env.NEXT_PUBLIC_BACKEND_URL;
 
+  console.log(session);
   const form = useForm({
     defaultValues: {
       restaurantName: "",
@@ -46,7 +47,7 @@ export function BeProviderForm({
       website: "",
       description: "",
     } as ProviderFormValues,
-    
+
     validators: {
       onChange: providerSchema,
     },

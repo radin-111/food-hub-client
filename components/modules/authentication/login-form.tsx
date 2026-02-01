@@ -52,7 +52,9 @@ export function LoginForm({
         const { error, data } = await authClient.signIn.email({
           email: value.email,
           password: value.password,
+          callbackURL: env.NEXT_PUBLIC_FRONTEND_URL,
         });
+       
 
         if (error?.status === 401) {
           toast.error("Invalid email or password", { id: toastId });
