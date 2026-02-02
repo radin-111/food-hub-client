@@ -11,6 +11,8 @@ export const userService = {
       const res = await fetch(`${AUTH_URL}/get-session`, {
         headers: {
           Cookie: cookieHeader,
+          Origin: env.NEXT_PUBLIC_BACKEND_URL,
+          Accept: "application/json",
         },
 
         credentials: "include",
@@ -33,16 +35,22 @@ export const userService = {
     try {
       const cookieStore = await cookies();
       const cookieHeader = await cookieStore.toString();
-      const users = fetch(`${BACKEND_URL}/users?page=${page}`, {
+      const users = await fetch(`${BACKEND_URL}/users?page=${page}`, {
         headers: {
           Cookie: cookieHeader,
+          Origin: env.NEXT_PUBLIC_BACKEND_URL,
+          Accept: "application/json",
         },
         credentials: "include",
         cache: "no-store",
       });
-      return users.then((res) => res.json());
+      const res = await users.json();
+      return res;
     } catch (err) {
       return { data: null, error: { message: "Something Went Wrong" } };
     }
   },
 };
+
+
+

@@ -8,6 +8,7 @@ import {
   Utensils,
   ShoppingCart,
   CreditCard,
+  UserCheck,
 } from "lucide-react";
 
 export const userRoutes = {
@@ -31,6 +32,11 @@ export const userRoutes = {
       title: "Orders",
       url: "/admin-dashboard/orders",
       icon: ShoppingBag,
+    },
+    {
+      title: "Provider profiles",
+      url: "/admin-dashboard/provider-profiles",
+      icon: UserCheck ,
     },
     {
       title: "Provider requests",

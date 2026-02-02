@@ -39,7 +39,7 @@ export function AppSidebar({
         <Image
         width={50}
         height={50}
-          src={user?.image || "https://i.pravatar.cc/40"}
+          src={user?.image || "https://img.freepik.com/premium-vector/user-profile-icon-flat-style-member-avatar-vector-illustration-isolated-background-human-permission-sign-business-concept_157943-15752.jpg?semt=ais_hybrid&w=740&q=80"}
           alt="Profile"
           className="h-10 w-10 rounded-full object-cover"
         />
