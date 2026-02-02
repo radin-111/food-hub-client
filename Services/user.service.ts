@@ -29,8 +29,12 @@ export const userService = {
   },
   getUsers: async function (page: string) {
     try {
+      const cookieStore = await cookies();
       const users = fetch(`${BACKEND_URL}/users?page=${page}`, {
         cache: "no-store",
+        headers: {
+          Cookie: cookieStore.toString(),
+        },
       });
       return users.then((res) => res.json());
     } catch (err) {
