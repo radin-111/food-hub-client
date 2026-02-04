@@ -10,7 +10,7 @@ import {
   CreditCard,
   UserCheck,
 } from "lucide-react";
-
+import { TbCategoryFilled } from "react-icons/tb";
 export const userRoutes = {
   adminRoutes: [
     {
@@ -27,6 +27,11 @@ export const userRoutes = {
       title: "Users",
       url: "/admin-dashboard/users",
       icon: Users,
+    },
+    {
+      title: "Categories",
+      url: "/admin-dashboard/categories",
+      icon: TbCategoryFilled ,
     },
     {
       title: "Orders",

@@ -18,6 +18,8 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Eye, Check, X } from "lucide-react";
+import { env } from "@/env";
+import { toast } from "sonner";
 
 type Provider = {
   id: string;
@@ -30,15 +32,51 @@ type Provider = {
   website?: string;
   description?: string;
   createdAt: string;
+  userId: string;
 };
-
+const backendUrl = env.NEXT_PUBLIC_BACKEND_URL;
 export default function ProviderRequestTable({ data }: { data: Provider[] }) {
-  const handleAccept = (id: string) => {
-    console.log("ACCEPT PROVIDER:", id);
+  const acceptBody = { isActive: "ACTIVE" };
+  const rejectBody = { isActive: "INACTIVE" };
+  const handleAccept = async (id: string) => {
+    const res = await fetch(`${backendUrl}/provider/requests/${id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify(acceptBody),
+    });
+    const result = await res.json();
+    console.log(result);
+    if (result.success) {
+      const toastId = toast.success("Provider request accepted");
+      toast("Refresh page to see changes", {
+        id: toastId,
+      });
+    } else {
+      toast.error("Something went wrong");
+    }
   };
 
-  const handleReject = (id: string) => {
-    console.log("REJECT PROVIDER:", id);
+  const handleReject = async (id: string) => {
+    const res = await fetch(`${backendUrl}/provider/requests/${id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify(rejectBody),
+    });
+    const result = await res.json();
+    if (result.success) {
+      const toastId = toast.success("Provider request rejected");
+      toast("Refresh page to see changes", {
+        id: toastId,
+      });
+    } else {
+      toast.error("Something went wrong");
+    }
   };
 
   if (!data || data.length === 0) {
@@ -77,7 +115,6 @@ export default function ProviderRequestTable({ data }: { data: Provider[] }) {
               </TableCell>
 
               <TableCell className="text-right space-x-1">
-                
                 <Dialog>
                   <DialogTrigger asChild>
                     <Button size="icon" variant="outline">
