@@ -1,4 +1,5 @@
-import AllCategories from "@/components/modules/Admin/Categories";
+import AddCategories from "@/components/modules/Admin/AddCategories";
+import AllCategories from "@/components/modules/Admin/AllCategories";
 import { env } from "@/env";
 import { cookies } from "next/headers";
 import React from "react";
@@ -11,11 +12,15 @@ export default async function Categories() {
       Cookie: cookieStore.toString(),
     },
 
-    cache: "no-store",
+    cache: "force-cache",
+    next: {
+      tags: ["categories"],
+    },
   });
-  const {data}  = await res.json();
+  const { data } = await res.json();
   return (
-    <div className="max-w-3xl">
+    <div >
+      <AddCategories />
       <AllCategories data={data} />
     </div>
   );

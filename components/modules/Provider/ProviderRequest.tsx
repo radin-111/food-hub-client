@@ -48,7 +48,7 @@ export default function ProviderRequestTable({ data }: { data: Provider[] }) {
       body: JSON.stringify(acceptBody),
     });
     const result = await res.json();
-    console.log(result);
+    
     if (result.success) {
       const toastId = toast.success("Provider request accepted");
       toast("Refresh page to see changes", {

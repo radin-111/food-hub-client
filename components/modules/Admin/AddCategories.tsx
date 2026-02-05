@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   Field,
   FieldError,
@@ -22,7 +22,7 @@ import { env } from "@/env";
 import { useForm } from "@tanstack/react-form";
 import { toast } from "sonner";
 import * as z from "zod";
-import { updateTag } from "next/cache";
+import { addCategories } from "@/Actions/category.action";
 
 const categorySchema = z.object({
   name: z.string().min(1, "Category name is required"),
@@ -30,9 +30,9 @@ const categorySchema = z.object({
 
 const backendUrl = env.NEXT_PUBLIC_BACKEND_URL;
 
-export default function AllCategories({ data }: { data: any }) {
+export default function AddCategories() {
   const [open, setOpen] = useState(false);
-  console.log(data);
+
   const form = useForm({
     defaultValues: {
       name: "",
@@ -46,16 +46,7 @@ export default function AllCategories({ data }: { data: any }) {
       const toastId = toast.loading("Adding category...");
 
       try {
-        const res = await fetch(`${backendUrl}/meals/categories`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ cuisineType: value.name }),
-          credentials: "include",
-        });
-
-        const { success } = await res.json();
+        const { success } = await addCategories(value);
 
         if (success) {
           toast.success("Category added successfully", { id: toastId });
@@ -64,6 +55,7 @@ export default function AllCategories({ data }: { data: any }) {
           form.reset();
         }
       } catch (error) {
+       ;
         toast.error("Failed to add category", { id: toastId });
       }
     },

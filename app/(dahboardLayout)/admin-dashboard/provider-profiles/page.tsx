@@ -2,7 +2,7 @@ import AllProviders from "@/components/modules/Provider/AllProviders";
 import Pagination2 from "@/components/ui/pagination2";
 import { env } from "@/env";
 import { cookies } from "next/headers";
-import React from "react";
+
 const backendUrl = env.BACKEND_URL;
 export default async function ProviderProfiles({
   searchParams,
@@ -19,11 +19,11 @@ export default async function ProviderProfiles({
   });
 
   const { data } = await res.json();
-  console.log(data);
+  
   return (
     <div>
       <AllProviders data={data.result} />
-      {/* <Pagination2 totalPages={Number(result.totalPages)}/> */}
+      <Pagination2 totalPages={Number(data.totalPages)}/>
     </div>
   );
 }
