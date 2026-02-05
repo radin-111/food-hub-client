@@ -1,35 +1,16 @@
 "use client";
 import { Button } from "@/components/ui/button";
+import Logout from "@/components/ui/Logout";
 import { authClient } from "@/lib/auth-client";
 import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React from "react";
-import Swal from "sweetalert2";
 
 
 export default function Session() {
-  const router = useRouter()
-  const handleSignOut = () => {
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You will be logged out of your account",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Yes, logout",
-      cancelButtonText: "Cancel",
-      confirmButtonColor: "#ef4444", // red
-      cancelButtonColor: "#6b7280", // gray
-      reverseButtons: true,
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        await authClient.signOut();
-        router.push("/");
-        window.location.reload();
-      }
-    });
-  };
+  const router = useRouter();
+  
   const data = authClient.useSession();
   const image =
     data?.data?.user?.image ||
@@ -48,7 +29,8 @@ export default function Session() {
             />
           </Avatar>
 
-          <Button  variant={'destructive'} onClick={() => handleSignOut()}>Logout</Button>
+          <Logout />
+          
         </div>
       ) : (
         <>

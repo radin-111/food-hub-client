@@ -5,7 +5,7 @@ import { Button } from "./button";
 import { useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
 
-export default function Logout() {
+export default function Logout({fullWidth}:{fullWidth?:boolean}) {
     const router = useRouter();
   const handleSignOut = () => {
     Swal.fire({
@@ -27,7 +27,7 @@ export default function Logout() {
     });
   };
   return (
-    <Button variant={"destructive"} onClick={() => handleSignOut()}>
+    <Button variant={"destructive"} className={fullWidth ? "w-full" : ""} onClick={() => handleSignOut()}>
       Logout
     </Button>
   );
