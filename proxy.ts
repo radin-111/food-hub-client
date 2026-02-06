@@ -45,7 +45,9 @@ export default async function proxy(request: NextRequest) {
   ) {
     return NextResponse.redirect(new URL("/", request.url));
   }
-
+  if (pathName.startsWith("/be-a-provider") && isAdmin) {
+    return NextResponse.redirect(new URL("/", request.url));
+  }
   if (pathName.startsWith("/admin-dashboard") && !isAdmin) {
     return navigate(role, request);
   }
@@ -60,6 +62,7 @@ export default async function proxy(request: NextRequest) {
 export const config = {
   matcher: [
     "/login",
+    "/be-a-provider",
     "/signup",
     "/admin-dashboard",
     "/admin-dashboard/:path*",

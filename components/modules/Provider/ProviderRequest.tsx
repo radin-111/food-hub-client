@@ -20,6 +20,8 @@ import { Button } from "@/components/ui/button";
 import { Eye, Check, X } from "lucide-react";
 import { env } from "@/env";
 import { toast } from "sonner";
+import { acceptProvider, rejectProvider } from "@/Actions/provider.action";
+import Swal from "sweetalert2";
 
 type Provider = {
   id: string;
@@ -36,39 +38,41 @@ type Provider = {
 };
 const backendUrl = env.NEXT_PUBLIC_BACKEND_URL;
 export default function ProviderRequestTable({ data }: { data: Provider[] }) {
-  const acceptBody = { isActive: "ACTIVE" };
-  const rejectBody = { isActive: "INACTIVE" };
   const handleAccept = async (id: string) => {
-    const res = await fetch(`${backendUrl}/provider/requests/${id}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-      body: JSON.stringify(acceptBody),
+    const confirm = await Swal.fire({
+      title: "Accept provider request?",
+      text: "This will approve the provider",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonText: "Yes, accept",
+      cancelButtonText: "Cancel",
     });
-    const result = await res.json();
-    
+
+    if (!confirm.isConfirmed) return;
+
+    const result = await acceptProvider(id);
+
     if (result.success) {
-      const toastId = toast.success("Provider request accepted");
-      toast("Refresh page to see changes", {
-        id: toastId,
-      });
+      toast.success("Provider request accepted");
     } else {
       toast.error("Something went wrong");
     }
   };
 
   const handleReject = async (id: string) => {
-    const res = await fetch(`${backendUrl}/provider/requests/${id}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-      body: JSON.stringify(rejectBody),
+    const confirm = await Swal.fire({
+      title: "Reject provider request?",
+      text: "This action cannot be undone",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, reject",
+      cancelButtonText: "Cancel",
     });
-    const result = await res.json();
+
+    if (!confirm.isConfirmed) return;
+
+    const result = await rejectProvider(id);
+
     if (result.success) {
       const toastId = toast.success("Provider request rejected");
       toast("Refresh page to see changes", {
