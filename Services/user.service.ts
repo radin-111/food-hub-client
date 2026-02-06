@@ -3,6 +3,8 @@ import { cookies } from "next/headers";
 
 const AUTH_URL = env.AUTH_URL;
 const BACKEND_URL = env.BACKEND_URL;
+const frontEndUrl = env.FRONTEND_URL;
+
 export const userService = {
   getSession: async function () {
     try {
@@ -11,11 +13,10 @@ export const userService = {
       const res = await fetch(`${AUTH_URL}/get-session`, {
         headers: {
           Cookie: cookieHeader,
-
+          Origin: frontEndUrl,
           Accept: "application/json",
         },
 
-        
         cache: "no-store",
       });
 
@@ -37,7 +38,7 @@ export const userService = {
       const users = await fetch(`${BACKEND_URL}/users?page=${page}`, {
         headers: {
           Cookie: cookieHeader,
-
+          Origin: frontEndUrl,
           Accept: "application/json",
         },
 
@@ -59,6 +60,7 @@ export const userService = {
         headers: {
           Cookie: cookieStore.toString(),
           "Content-Type": "application/json",
+          Origin: frontEndUrl,
         },
         cache: "no-store",
         body: JSON.stringify({ role: "ADMIN" }),
@@ -77,8 +79,10 @@ export const userService = {
       const res = await fetch(`${BACKEND_URL}/users/${userId}/role`, {
         method: "PATCH",
         cache: "no-store",
+
         headers: {
           Cookie: cookieStore.toString(),
+          Origin: frontEndUrl,
           "Content-Type": "application/json",
         },
 

@@ -4,7 +4,7 @@ import { env } from "@/env";
 import { updateTag } from "next/cache";
 import { cookies } from "next/headers";
 const backendUrl = env.BACKEND_URL;
-
+const frontEndUrl = env.FRONTEND_URL;
 export default async function ProviderRequests({
   searchParams,
 }: {
@@ -13,17 +13,16 @@ export default async function ProviderRequests({
   const cookieStore: any = await cookies();
   const { page } = await searchParams;
   const res = await fetch(`${backendUrl}/provider/requests?page=${page}`, {
-    cache: "force-cache",
+    cache: "no-store",
     headers: {
       Cookie: cookieStore.toString(),
+      Origin: frontEndUrl,
     },
-    next:{
-      tags:["provider-requests"]
-    }
+    
     
   });
 
-  updateTag("provider-requests");
+  
   const { data } = await res.json();
 
   return (

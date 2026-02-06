@@ -4,6 +4,7 @@ import { env } from "@/env";
 import { cookies } from "next/headers";
 
 const backendUrl = env.BACKEND_URL;
+const frontEndUrl = env.FRONTEND_URL;
 export default async function ProviderProfiles({
   searchParams,
 }: {
@@ -15,6 +16,7 @@ export default async function ProviderProfiles({
     cache: "no-store",
     headers: {
       Cookie: cookieStore.toString(),
+      Origin: frontEndUrl,
     },
   });
 

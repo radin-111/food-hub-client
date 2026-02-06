@@ -2,6 +2,8 @@ import { env } from "@/env";
 import { cookies } from "next/headers";
 
 const backendUrl = env.BACKEND_URL;
+const frontEndUrl = env.FRONTEND_URL;
+
 
 export const categoriesService = {
   createCategories: async (value: any) => {
@@ -10,6 +12,7 @@ export const categoriesService = {
       method: "POST",
       headers: {
         Cookie: cookieStore.toString(),
+        Origin: frontEndUrl,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ cuisineType: value.name }),
@@ -23,6 +26,7 @@ export const categoriesService = {
       method: "PATCH",
       headers: {
         Cookie: cookieStore.toString(),
+        Origin: frontEndUrl,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ cuisineType: value.cuisineType }),
