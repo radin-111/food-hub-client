@@ -2,7 +2,7 @@ import AddCategories from "@/components/modules/Admin/AddCategories";
 import AllCategories from "@/components/modules/Admin/AllCategories";
 import { env } from "@/env";
 import { cookies } from "next/headers";
-import React from "react";
+
 
 const backendUrl = env.BACKEND_URL;
 export default async function Categories() {
@@ -12,10 +12,8 @@ export default async function Categories() {
       Cookie: cookieStore.toString(),
     },
 
-    cache: "force-cache",
-    next: {
-      tags: ["categories"],
-    },
+    cache: "no-store",
+    
   });
   const { data } = await res.json();
   return (
