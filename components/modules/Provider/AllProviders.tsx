@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Eye } from "lucide-react";
-import { rejectProvider } from "@/Actions/provider.action";
+import { acceptProvider, rejectProvider } from "@/Actions/provider.action";
 import { toast } from "sonner";
 import Swal from "sweetalert2";
 
@@ -27,13 +27,14 @@ type Provider = {
   restaurantName: string;
   city: string;
   phoneNumber: string;
-  isActive: "ACTIVE";
+  isActive: "ACTIVE" | "INACTIVE";
   address: string;
   country: string;
   description: string;
 };
 
 export default function AllProviders({ data }: { data: Provider[] }) {
+  console.log(data)
   if (data.length === 0) {
     return (
       <div className="flex justify-center items-center">
@@ -59,6 +60,26 @@ export default function AllProviders({ data }: { data: Provider[] }) {
       toast.success("Provider deactivated successfully");
     } else {
       toast.error("Failed to deactivate provider");
+    }
+  };
+
+  const handleReactivate = async (id: string) => {
+    const confirm = await Swal.fire({
+      title: "Reactivate provider?",
+      text: "This provider will be reactivated",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonText: "Yes, reactivate",
+      cancelButtonText: "Cancel",
+    });
+
+    if (!confirm.isConfirmed) return;
+
+    const result = await acceptProvider(id);
+    if (result?.success) {
+      toast.success("Provider reactivated successfully");
+    } else {
+      toast.error("Failed to reactivate provider");
     }
   };
 
@@ -90,9 +111,7 @@ export default function AllProviders({ data }: { data: Provider[] }) {
                 className={`rounded px-2 py-1 text-xs font-medium ${
                   provider.isActive === "ACTIVE"
                     ? "bg-green-100 text-green-700"
-                    : provider.isActive === "PENDING"
-                      ? "bg-yellow-100 text-yellow-700"
-                      : "bg-red-100 text-red-700"
+                    : "bg-red-100 text-red-700"
                 }`}
               >
                 {provider.isActive}
@@ -141,14 +160,24 @@ export default function AllProviders({ data }: { data: Provider[] }) {
                 </DialogContent>
               </Dialog>
 
-              {/* Deactivate */}
-              <Button
-                variant="destructive"
-                size="sm"
-                onClick={() => handleDeactivate(provider.id)}
-              >
-                Deactivate
-              </Button>
+              {/* Conditional action */}
+              {provider.isActive === "ACTIVE" ? (
+                <Button
+                  variant="destructive"
+                  size="sm"
+                  onClick={() => handleDeactivate(provider.id)}
+                >
+                  Deactivate
+                </Button>
+              ) : (
+                <Button
+                  variant="default"
+                  size="sm"
+                  onClick={() => handleReactivate(provider.id)}
+                >
+                  Reactivate
+                </Button>
+              )}
             </TableCell>
           </TableRow>
         ))}
