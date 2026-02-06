@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import Swal from "sweetalert2";
+import { makeAdminFunction, removeAdminFunction } from "@/Actions/user.actions";
 
 type User = {
   id: string;
@@ -22,8 +23,6 @@ type User = {
 };
 
 export default function UserTable({ users }: { users: User[] }) {
- 
-
   const makeAdmin = async (userId: string) => {
     const result = await Swal.fire({
       title: "Are you sure?",
@@ -37,21 +36,9 @@ export default function UserTable({ users }: { users: User[] }) {
     if (!result.isConfirmed) return;
 
     try {
-     await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/users/${userId}/role`,
-        {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-          body: JSON.stringify({ role: "ADMIN" }),
-          
-        },
-      );
+      const res = await makeAdminFunction(userId);
 
       toast.success("Customer promoted to Admin");
-      window.location.reload();
     } catch {
       toast.error("Something went wrong while updating role");
     }
@@ -70,20 +57,9 @@ export default function UserTable({ users }: { users: User[] }) {
     if (!result.isConfirmed) return;
 
     try {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/users/${userId}/role`,
-        {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-          body: JSON.stringify({ role: "CUSTOMER" }),
-        },
-      );
+      const res = await removeAdminFunction(userId);
 
       toast.success("Admin role removed");
-      window.location.reload();
     } catch {
       toast.error("Something went wrong while updating role");
     }

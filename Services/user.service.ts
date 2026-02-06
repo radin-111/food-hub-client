@@ -11,11 +11,11 @@ export const userService = {
       const res = await fetch(`${AUTH_URL}/get-session`, {
         headers: {
           Cookie: cookieHeader,
-          Origin: env.NEXT_PUBLIC_BACKEND_URL,
+
           Accept: "application/json",
         },
 
-        credentials: "include",
+        
         cache: "no-store",
       });
 
@@ -27,7 +27,6 @@ export const userService = {
 
       return { data: session, error: null };
     } catch (err) {
-      
       return { data: null, error: { message: "Something Went Wrong" } };
     }
   },
@@ -38,10 +37,10 @@ export const userService = {
       const users = await fetch(`${BACKEND_URL}/users?page=${page}`, {
         headers: {
           Cookie: cookieHeader,
-          Origin: env.NEXT_PUBLIC_BACKEND_URL,
+
           Accept: "application/json",
         },
-        credentials: "include",
+
         cache: "no-store",
       });
       const res = await users.json();
@@ -50,7 +49,45 @@ export const userService = {
       return { data: null, error: { message: "Something Went Wrong" } };
     }
   },
+
+  makeAdmin: async function (userId: string) {
+    try {
+      const cookieStore = await cookies();
+
+      const res = await fetch(`${BACKEND_URL}/users/${userId}/role`, {
+        method: "PATCH",
+        headers: {
+          Cookie: cookieStore.toString(),
+          "Content-Type": "application/json",
+        },
+        cache: "no-store",
+        body: JSON.stringify({ role: "ADMIN" }),
+      });
+      const data = await res.json();
+      return data;
+    } catch (err) {
+      return { data: null, error: { message: "Something Went Wrong" } };
+    }
+  },
+
+  removeAdmin: async function (userId: string) {
+    try {
+      const cookieStore = await cookies();
+
+      const res = await fetch(`${BACKEND_URL}/users/${userId}/role`, {
+        method: "PATCH",
+        cache: "no-store",
+        headers: {
+          Cookie: cookieStore.toString(),
+          "Content-Type": "application/json",
+        },
+
+        body: JSON.stringify({ role: "CUSTOMER" }),
+      });
+      const data = await res.json();
+      return data;
+    } catch (err) {
+      return { data: null, error: { message: "Something Went Wrong" } };
+    }
+  },
 };
-
-
-
