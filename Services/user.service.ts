@@ -1,5 +1,5 @@
 import { env } from "@/env";
-import { cookies, headers } from "next/headers";
+import { cookies } from "next/headers";
 
 const AUTH_URL = env.AUTH_URL;
 const BACKEND_URL = env.BACKEND_URL;
@@ -11,12 +11,11 @@ export const userService = {
       const cookieStore = await cookies();
       const cookieHeader = await cookieStore.toString();
       const res = await fetch(`${AUTH_URL}/get-session`, {
-        // headers: {
-        //   Cookie: cookieHeader,
-        //   Origin: frontEndUrl,
-        //   Accept: "application/json",
-        // },
-        headers: await headers(),
+        headers: {
+          Cookie: cookieHeader,
+          Origin: frontEndUrl,
+          Accept: "application/json",
+        },
         credentials:"include",
 
         cache: "no-store",
