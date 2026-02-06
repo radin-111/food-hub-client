@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import { env } from "./env";
 
 const nextConfig: NextConfig = {
   /* config options here */
@@ -23,7 +24,7 @@ const nextConfig: NextConfig = {
     return [
       {
         source: "/api/auth/:path*",
-        destination: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/:path*`,
+        destination: `${env.NEXT_PUBLIC_BACKEND_URL}/api/auth/:path*`,
       },
     ];
   },
