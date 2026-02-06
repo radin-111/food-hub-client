@@ -15,6 +15,7 @@ export const categoriesService = {
         Origin: frontEndUrl,
         "Content-Type": "application/json",
       },
+      credentials:"include",
       body: JSON.stringify({ cuisineType: value.name }),
     });
     const data = await res.json();
@@ -29,6 +30,7 @@ export const categoriesService = {
         Origin: frontEndUrl,
         "Content-Type": "application/json",
       },
+      credentials:"include",
       body: JSON.stringify({ cuisineType: value.cuisineType }),
     });
     const { success } = await res.json();

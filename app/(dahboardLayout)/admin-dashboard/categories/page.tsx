@@ -12,7 +12,7 @@ export default async function Categories() {
       Cookie: cookieStore.toString(),
       Origin: frontEndUrl,
     },
-
+    credentials:"include",
     cache: "no-store",
   });
   const { data } = await res.json();

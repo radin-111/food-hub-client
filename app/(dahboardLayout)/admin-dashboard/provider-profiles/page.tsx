@@ -18,6 +18,7 @@ export default async function ProviderProfiles({
       Cookie: cookieStore.toString(),
       Origin: frontEndUrl,
     },
+    credentials:"include",
   });
 
   const { data } = await res.json();

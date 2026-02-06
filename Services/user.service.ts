@@ -16,6 +16,7 @@ export const userService = {
           Origin: frontEndUrl,
           Accept: "application/json",
         },
+        credentials:"include",
 
         cache: "no-store",
       });
@@ -41,7 +42,7 @@ export const userService = {
           Origin: frontEndUrl,
           Accept: "application/json",
         },
-
+        credentials:"include",
         cache: "no-store",
       });
       const res = await users.json();
@@ -62,6 +63,7 @@ export const userService = {
           "Content-Type": "application/json",
           Origin: frontEndUrl,
         },
+        credentials:"include",
         cache: "no-store",
         body: JSON.stringify({ role: "ADMIN" }),
       });
@@ -85,7 +87,7 @@ export const userService = {
           Origin: frontEndUrl,
           "Content-Type": "application/json",
         },
-
+        credentials:"include",
         body: JSON.stringify({ role: "CUSTOMER" }),
       });
       const data = await res.json();
