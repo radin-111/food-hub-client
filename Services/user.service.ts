@@ -4,6 +4,7 @@ import { cookies } from "next/headers";
 const AUTH_URL = env.AUTH_URL;
 const BACKEND_URL = env.BACKEND_URL;
 const frontEndUrl = env.FRONTEND_URL;
+const imgbbKey = env.IMGBB_KEY;
 
 export const userService = {
   getSession: async function () {
@@ -16,7 +17,7 @@ export const userService = {
           Origin: frontEndUrl,
           Accept: "application/json",
         },
-        credentials:"include",
+        credentials: "include",
 
         cache: "no-store",
       });
@@ -42,7 +43,7 @@ export const userService = {
           Origin: frontEndUrl,
           Accept: "application/json",
         },
-        credentials:"include",
+        credentials: "include",
         cache: "no-store",
       });
       const res = await users.json();
@@ -63,7 +64,7 @@ export const userService = {
           "Content-Type": "application/json",
           Origin: frontEndUrl,
         },
-        credentials:"include",
+        credentials: "include",
         cache: "no-store",
         body: JSON.stringify({ role: "ADMIN" }),
       });
@@ -87,7 +88,7 @@ export const userService = {
           Origin: frontEndUrl,
           "Content-Type": "application/json",
         },
-        credentials:"include",
+        credentials: "include",
         body: JSON.stringify({ role: "CUSTOMER" }),
       });
       const data = await res.json();
@@ -96,4 +97,20 @@ export const userService = {
       return { data: null, error: { message: "Something Went Wrong" } };
     }
   },
+  uploadImage: async function (image: File) {
+    try {
+      const formData = new FormData();
+      formData.append("image", image);
+      const res = await fetch(`https://api.imgbb.com/1/upload?key=${imgbbKey}`, {
+        method: "POST",
+        
+        body: formData,
+      });
+      const data = await res.json();
+      return data;
+    } catch (err) {
+      return { data: null, error: { message: "Something Went Wrong" } };
+    }
+  },
+  
 };

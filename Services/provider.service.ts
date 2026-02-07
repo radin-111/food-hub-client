@@ -32,4 +32,65 @@ export const providerServices = {
     const data = await res.json();
     return data;
   },
+
+  updateMeal: async (id: string, formData: FormData) => {
+    const cookieStore = await cookies();
+    try {
+      const res = await fetch(`${backendUrl}/meals/${id}`, {
+        method: "PATCH",
+        headers: {
+          Cookie: cookieStore.toString(),
+        },
+        credentials: "include",
+        body: formData,
+      });
+      const data = await res.json();
+      return data;
+    } catch (err) {
+      return { data: null, error: { message: "Something Went Wrong" } };
+    }
+  },
+
+  deleteMeal: async (id: string) => {
+    const cookieStore = await cookies();
+    try {
+      const res = await fetch(`${backendUrl}/meals/${id}`, {
+        method: "DELETE",
+        headers: {
+          Cookie: cookieStore.toString(),
+        },
+        credentials: "include",
+      });
+      const data = await res.json();
+      return data;
+    } catch (err) {
+      return { data: null, error: { message: "Something Went Wrong" } };
+    }
+  },
+  addMeal: async (
+    value: any,
+    imageRes: any,
+  ) => {
+    try {
+      const cookieStore = await cookies();
+      const res = await fetch(`${backendUrl}/meals`, {
+        method: "POST",
+        headers: {
+          Cookie: cookieStore.toString(),
+          "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: value.name,
+          description: value.description,
+          price: value.price,
+          categoryId: value.categoryId,
+          image: imageRes.data.url,
+        }),
+        credentials: "include",
+      });
+      const data = await res.json();
+      return data;
+    } catch (err) {
+      return { data: null, error: { message: "Something Went Wrong" } };
+    }
+  },
 };

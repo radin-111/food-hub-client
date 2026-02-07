@@ -3,7 +3,7 @@ import { env } from "./env";
 
 const nextConfig: NextConfig = {
   /* config options here */
-    images: {
+  images: {
     formats: ["image/avif", "image/webp"],
     remotePatterns: [
       {
@@ -17,7 +17,11 @@ const nextConfig: NextConfig = {
       {
         protocol: "https",
         hostname: "img.freepik.com",
-      }
+      },
+      {
+        protocol: "https",
+        hostname: "i.ibb.co.com",
+      },
     ],
   },
   async rewrites() {

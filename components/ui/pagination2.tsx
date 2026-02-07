@@ -46,7 +46,7 @@ export default function Pagination2({ totalPages }: { totalPages: number }) {
         size="sm"
         variant="outline"
         onClick={() => navigateToPage(currentPage + 1)}
-        disabled={currentPage === totalPages}
+        disabled={(currentPage === totalPages)||(currentPage > totalPages)}
         className="flex items-center"
       >
         Next <ChevronRight className="w-4 h-4 ml-1" />
@@ -56,7 +56,7 @@ export default function Pagination2({ totalPages }: { totalPages: number }) {
         size="sm"
         variant="outline"
         onClick={() => navigateToPage(totalPages)}
-        disabled={currentPage === totalPages}
+        disabled={(currentPage === totalPages)||(currentPage > totalPages)}
         className="flex items-center"
       >
         Last <ChevronsRight className="w-4 h-4 ml-1" />
