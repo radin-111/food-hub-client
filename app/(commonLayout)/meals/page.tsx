@@ -20,10 +20,10 @@ export default async function Meals({
   let searchText = search || "";
   const { data: meals } = await mealServices.getMeals(page, searchText);
   const { data: categories } = await mealServices.getAllCategories();
-
+ 
   return (
     <div className="max-w-8/12 mx-auto my-10">
-     <MealsSearchBar categories={categories} />
+      <MealsSearchBar categories={categories} />
 
       <MealsCard meals={meals?.result} />
       <Pagination2 totalPages={meals?.totalPages} />

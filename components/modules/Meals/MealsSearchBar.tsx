@@ -8,7 +8,7 @@ import { FormEvent } from "react";
 export default function MealsSearchBar({ categories }: { categories: Object[] }) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  console.log(categories)
+ 
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
