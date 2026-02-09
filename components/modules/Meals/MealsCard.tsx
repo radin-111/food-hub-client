@@ -10,6 +10,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
 
 export default function MealsCard({ meals }: { meals: Object[] }) {
   const router = useRouter();
@@ -32,8 +33,9 @@ export default function MealsCard({ meals }: { meals: Object[] }) {
               {meal.description}
             </CardDescription>
           </CardHeader>
-          <CardFooter className="text-center mb-10 flex justify-center items-center">
+          <CardFooter className="text-center mb-10 flex gap-4 flex-col items-center">
             <h1 className="text-green-600 font-bold text-xl">${meal.price}</h1>
+            <Button variant={"outline"} className="w-full bg-green-50">Add to Cart</Button>
           </CardFooter>
         </Card>
       ))}
