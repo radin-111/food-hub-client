@@ -49,24 +49,26 @@ export function LoginForm({
       const toastId = toast.loading("Logging in...");
 
       try {
-        const { error } = await authClient.signIn.email({
+        const { error, data } = await authClient.signIn.email({
           email: value.email,
           password: value.password,
           callbackURL: env.NEXT_PUBLIC_FRONTEND_URL,
         });
-       
 
-        if (error?.status === 401) {
+        if (data) {
+          toast.success("Logged in successfully", { id: toastId });
+          router.push("/");
+          return;
+        } else if (error?.status === 401) {
           toast.error("Invalid email or password", { id: toastId });
-        }
-        if (error?.status === 403) {
+        } else if (error?.status === 403) {
           toast.error("Please verify your email before logging in", {
             id: toastId,
           });
           return;
+        }else{
+          toast.error("Invalid credentials", { id: toastId });
         }
-        toast.success("Logged in successfully", { id: toastId });
-        router.push("/");
       } catch (error) {
         toast.error("Failed to login", { id: toastId });
       }
