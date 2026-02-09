@@ -3,7 +3,7 @@ import * as z from "zod";
 export const env = createEnv({
   server: {
     BACKEND_URL: z.string().url(),
-    IMGBB_KEY: z.string(),
+    IMGBB_KEY: z.string().url(),
     AUTH_URL: z.string().url(),
     FRONTEND_URL: z.string().url(),
   },
