@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { env } from "@/env";
 import { cookies } from "next/headers";
 import Link from "next/link";
-import { da } from "zod/v4/locales";
+
 
 export default async function BeProvider() {
   const cookieStore: any = await cookies();
@@ -72,7 +72,7 @@ export default async function BeProvider() {
       </div>
     );
   }
-  console.log(data);
+  
   return (
     <div className="my-10">
       <BeProviderForm />
