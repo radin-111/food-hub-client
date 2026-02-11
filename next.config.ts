@@ -30,14 +30,10 @@ const nextConfig: NextConfig = {
         source: "/api/auth/:path*",
         destination: `${env.NEXT_PUBLIC_BACKEND_URL}/api/auth/:path*`,
       },
-      // {
-      //   source:"/api/v1/:path*",
-      //   destination: `${env.BACKEND_URL}/api/v1/:path*`,
-      // }
       {
-        source:"/auth/:path*",
-        destination:`${env.NEXT_PUBLIC_BACKEND_URL}/auth/:path*`
-      }
+        source: "/api/:path*",
+        destination: `${env.BACKEND_URL}/api/v1/:path*`,
+      },
     ];
   },
 };

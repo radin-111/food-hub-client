@@ -1,3 +1,5 @@
+import MyOrders from "@/components/modules/Orders/MyOrders";
+import Pagination2 from "@/components/ui/pagination2";
 import { env } from "@/env";
 import { cookies } from "next/headers";
 import React from "react";
@@ -23,5 +25,10 @@ export default async function OrdersPage() {
       </div>
     );
   }
-  return <div>No orders found</div>;
+  return (
+    <div>
+      <MyOrders orders={data.result} />
+      <Pagination2 totalPages={data.totalPages} />
+    </div>
+  );
 }
