@@ -7,7 +7,7 @@ import {
   User,
   Utensils,
   ShoppingCart,
-  CreditCard,
+  
   UserCheck,
 } from "lucide-react";
 import { TbCategoryFilled } from "react-icons/tb";
@@ -31,7 +31,7 @@ export const userRoutes = {
     {
       title: "Categories",
       url: "/admin-dashboard/categories",
-      icon: TbCategoryFilled ,
+      icon: TbCategoryFilled,
     },
     {
       title: "Orders",
@@ -41,7 +41,7 @@ export const userRoutes = {
     {
       title: "Provider profiles",
       url: "/admin-dashboard/provider-profiles",
-      icon: UserCheck ,
+      icon: UserCheck,
     },
     {
       title: "Provider requests",
@@ -94,11 +94,7 @@ export const userRoutes = {
       url: "/customer-dashboard/cart",
       icon: ShoppingCart,
     },
-    {
-      title: "Checkout",
-      url: "/customer-dashboard/checkout",
-      icon: CreditCard,
-    },
+
     {
       title: "Orders",
       url: "/customer-dashboard/orders",
