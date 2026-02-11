@@ -4,9 +4,16 @@ import { env } from "@/env";
 import { cookies } from "next/headers";
 import React from "react";
 
-export default async function OrdersPage() {
+export default async function OrdersPage({
+  searchParams,
+}: {
+  searchParams: {
+    page: string;
+  };
+}) {
+  const { page } = await searchParams;
   const cookieStore = await cookies();
-  const res = await fetch(`${env.BACKEND_URL}/orders/get-orders`, {
+  const res = await fetch(`${env.BACKEND_URL}/orders/get-orders?page=${page}`, {
     cache: "no-store",
     headers: {
       Cookie: cookieStore.toString(),
@@ -15,7 +22,7 @@ export default async function OrdersPage() {
     credentials: "include",
   });
   const { data } = await res.json();
-  console.log(data);
+
   if (data.result.length === 0) {
     return (
       <div>

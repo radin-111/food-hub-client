@@ -6,7 +6,6 @@ import { env } from "@/env";
 import { mealServices } from "@/Services/meals.service";
 import { cookies } from "next/headers";
 
-const backendUrl = env.BACKEND_URL;
 export default async function MealsPage({
   searchParams,
 }: {
@@ -14,17 +13,22 @@ export default async function MealsPage({
 }) {
   const { page } = await searchParams;
   const cookieStore = await cookies();
-  
-  const { data: categories } = await mealServices.getAllCategories();
-  const mealsRes = await fetch(`${backendUrl}/meals/myMeals?page=${page}`, {
-    cache: "no-store",
-    headers: {
-      Cookie: cookieStore.toString(),
+  const mealsRes = await fetch(
+    `${env.BACKEND_URL}/meals/myMeals?page=${page}`,
+    {
+      cache: "no-store",
+      headers: {
+        Cookie: cookieStore.toString(),
+        Origin: env.FRONTEND_URL,
+      },
+      credentials: "include",
     },
-    credentials: "include",
-  });
-  const { data: mealsData } = await mealsRes.json();
+  );
+
+  const { data: categories } = await mealServices.getAllCategories();
   
+  const { data: mealsData } = await mealsRes.json();
+
   return (
     <div>
       <AddMealsForm categories={categories} />
