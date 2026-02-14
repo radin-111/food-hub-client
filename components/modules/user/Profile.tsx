@@ -1,6 +1,5 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { useForm } from "@tanstack/react-form";
 import * as z from "zod";
 import { toast } from "sonner";
@@ -65,19 +64,26 @@ const profileSchema = z.object({
 type ProfileSchemaType = z.infer<typeof profileSchema>;
 
 interface ProfileProps {
-  user: UserProfile;
+  user: UserProfile | null;
 }
 
 export default function Profile({ user }: ProfileProps) {
-  const router = useRouter();
+  if (!user) {
+    return (
+      <div className="max-w-5xl mx-auto p-8 text-center">
+        Loading profile...
+      </div>
+    );
+  }
+
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
-  const [preview, setPreview] = useState<string | null>(user.image);
+  const [preview, setPreview] = useState<string | null>(user?.image ?? null);
 
   const form = useForm({
     defaultValues: {
-      name: user.name,
+      name: user.name ?? "",
       phone: user.phone ?? "",
-      providerProfiles: user.providerProfiles,
+      providerProfiles: user.providerProfiles ?? null,
     } as ProfileSchemaType,
     validators: {
       onSubmit: profileSchema,
@@ -86,31 +92,22 @@ export default function Profile({ user }: ProfileProps) {
       const toastId = toast.loading("Updating profile...");
 
       try {
-        let imageUrl = user.image || "";
+        let imageUrl: string = user.image ?? "";
 
         if (selectedImage) {
           const uploadRes = await uploadImage(selectedImage);
-
-          imageUrl = uploadRes?.data?.url;
+          imageUrl = uploadRes?.data?.url ?? imageUrl;
         }
 
         const payload: any = {
           name: value.name,
           phone: value.phone,
+          image: imageUrl,
         };
-
-        payload.image = imageUrl;
 
         if (user.role === "PROVIDER" && value.providerProfiles) {
           payload.providerProfiles = {
-            restaurantName: value.providerProfiles.restaurantName,
-            address: value.providerProfiles.address,
-            city: value.providerProfiles.city,
-            country: value.providerProfiles.country,
-            postalCode: value.providerProfiles.postalCode,
-            phoneNumber: value.providerProfiles.phoneNumber,
-            website: value.providerProfiles.website,
-            description: value.providerProfiles.description,
+            ...value.providerProfiles,
           };
         }
 
@@ -184,7 +181,7 @@ export default function Profile({ user }: ProfileProps) {
               <Field>
                 <FieldLabel>Name</FieldLabel>
                 <Input
-                  value={field.state.value}
+                  value={field.state.value ?? ""}
                   onChange={(e) => field.handleChange(e.target.value)}
                 />
                 <FieldError errors={field.state.meta.errors} />
@@ -212,44 +209,55 @@ export default function Profile({ user }: ProfileProps) {
             )}
           />
 
-          {user.providerProfiles && (
+          {user.role === "PROVIDER" && user.providerProfiles && (
             <>
               <FieldSeparator>Restaurant Information</FieldSeparator>
 
-              {[
-                "restaurantName",
-                "address",
-                "city",
-                "country",
-                "postalCode",
-                "phoneNumber",
-                "website",
-                "description",
-              ].map((fieldName) => (
-                <form.Field
-                  key={fieldName}
-                  name={`providerProfiles.${fieldName}` as any}
-                  children={(field) => (
-                    <Field>
-                      <FieldLabel>
-                        {fieldName.charAt(0).toUpperCase() + fieldName.slice(1)}
-                      </FieldLabel>
-                      {fieldName === "description" ? (
-                        <Textarea
-                          value={field.state.value ?? ""}
-                          onChange={(e) => field.handleChange(e.target.value)}
-                        />
-                      ) : (
-                        <Input
-                          value={field.state.value ?? ""}
-                          onChange={(e) => field.handleChange(e.target.value)}
-                        />
+              {user.providerProfiles && (
+                <>
+                  <FieldSeparator>Restaurant Information</FieldSeparator>
+
+                  {[
+                    "restaurantName",
+                    "address",
+                    "city",
+                    "country",
+                    "postalCode",
+                    "phoneNumber",
+                    "website",
+                    "description",
+                  ].map((fieldName) => (
+                    <form.Field
+                      key={fieldName}
+                      name={`providerProfiles.${fieldName}` as any}
+                      children={(field) => (
+                        <Field>
+                          <FieldLabel>
+                            {fieldName.charAt(0).toUpperCase() +
+                              fieldName.slice(1)}
+                          </FieldLabel>
+                          {fieldName === "description" ? (
+                            <Textarea
+                              value={field.state.value ?? ""}
+                              onChange={(e) =>
+                                field.handleChange(e.target.value)
+                              }
+                            />
+                          ) : (
+                            <Input
+                              value={field.state.value ?? ""}
+                              onChange={(e) =>
+                                field.handleChange(e.target.value)
+                              }
+                            />
+                          )}
+                          <FieldError errors={field.state.meta.errors} />
+                        </Field>
                       )}
-                      <FieldError errors={field.state.meta.errors} />
-                    </Field>
-                  )}
-                />
-              ))}
+                    />
+                  ))}
+                </>
+              )}
             </>
           )}
 
