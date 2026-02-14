@@ -16,8 +16,9 @@ export async function rejectProvider(id: string) {
   revalidatePath("/admin-dashboard/provider-profiles");
   return data;
 }
-export async function uploadProviderImage(image: File) {
+export async function uploadImage(image: File) {
   const data = await userService.uploadImage(image);
+ 
   return data;
 }
 export const updateMeal = async (id: string, formData: FormData) => {

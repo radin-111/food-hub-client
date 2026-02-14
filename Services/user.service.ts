@@ -101,10 +101,32 @@ export const userService = {
     try {
       const formData = new FormData();
       formData.append("image", image);
-      const res = await fetch(`https://api.imgbb.com/1/upload?key=${imgbbKey}`, {
-        method: "POST",
-        
-        body: formData,
+      const res = await fetch(
+        `https://api.imgbb.com/1/upload?key=${imgbbKey}`,
+        {
+          method: "POST",
+
+          body: formData,
+        },
+      );
+      const data = await res.json();
+      return data;
+    } catch (err) {
+      return { data: null, error: { message: "Something Went Wrong" } };
+    }
+  },
+  getMyProfile: async function () {
+    try {
+      const cookieStore = await cookies();
+
+      const res = await fetch(`${BACKEND_URL}/user/myProfile`, {
+        headers: {
+          Cookie: cookieStore.toString(),
+          Origin: frontEndUrl,
+          Accept: "application/json",
+        },
+        credentials: "include",
+        cache: "no-store",
       });
       const data = await res.json();
       return data;
@@ -112,5 +134,24 @@ export const userService = {
       return { data: null, error: { message: "Something Went Wrong" } };
     }
   },
-  
+  updateProfile: async function (profileData: any) {
+    try {
+      const cookieStore = await cookies();
+      const res = await fetch(`${BACKEND_URL}/user/myProfile`, {
+        method: "PATCH",
+        headers: {
+          Cookie: cookieStore.toString(),
+          "Content-Type": "application/json",
+          Origin: frontEndUrl,
+        },
+        credentials: "include",
+
+        body: JSON.stringify(profileData),
+      });
+      const data = await res.json();
+      return data;
+    } catch (err) {
+      return { data: null, error: { message: "Something Went Wrong" } };
+    }
+  },
 };

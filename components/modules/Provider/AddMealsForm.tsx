@@ -29,8 +29,8 @@ import { toast } from "sonner";
 import { X } from "lucide-react";
 
 import { useState } from "react";
-import { addMeal, uploadProviderImage } from "@/Actions/provider.action";
-import { env } from "@/env";
+import { addMeal, uploadImage} from "@/Actions/provider.action";
+
 
 const formSchema = z.object({
   name: z.string().min(2, "Meal name is required"),
@@ -73,7 +73,7 @@ export function AddMealsForm({
  const toastId = toast.loading("Adding meal...");
       try {
        
-        const imageRes = await uploadProviderImage(value.image);
+        const imageRes = await uploadImage(value.image);
 
         if (!imageRes?.data?.url) {
           toast.error("Image upload failed", { id: toastId });

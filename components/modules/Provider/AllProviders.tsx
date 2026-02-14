@@ -34,7 +34,7 @@ type Provider = {
 };
 
 export default function AllProviders({ data }: { data: Provider[] }) {
-  console.log(data)
+  
   if (data.length === 0) {
     return (
       <div className="flex justify-center items-center">

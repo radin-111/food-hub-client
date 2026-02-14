@@ -33,8 +33,8 @@ type Order = {
 
 export default function ProviderOrdersTable({ orders }: { orders: Order[] }) {
   const handleStatusUpdate = async (id: string, newStatus: OrderStatus) => {
+    const toastId = toast.loading("Updating order status...");
     try {
-      const toastId = toast.loading("Updating order status...");
       const { success } = await updateOrderStatus(id, newStatus);
       if (success) {
         toast.success("Order status updated successfully", { id: toastId });
@@ -42,7 +42,7 @@ export default function ProviderOrdersTable({ orders }: { orders: Order[] }) {
         toast.error("Failed to update order status", { id: toastId });
       }
     } catch (error) {
-      console.error("Status update failed", error);
+      toast.error("Status update failed", { id: toastId });
     }
   };
 

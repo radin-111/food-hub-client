@@ -12,6 +12,8 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
+import { updateOrderStatus } from "@/Actions/order.action";
 
 type Order = {
   id: string;
@@ -36,16 +38,23 @@ type Order = {
 
 export default function MyOrders({ orders }: { orders: Order[] }) {
   const handleCancel = async (id: string) => {
+    const toastId = toast.loading("Cancelling order...");
     try {
-      await fetch(`/api/orders/${id}/cancel`, {
-        method: "PATCH",
-        credentials: "include",
-      });
-
-      // optional: refresh page
-      window.location.reload();
+      const { success } = await updateOrderStatus(id, "CANCELLED");
+      if (success) {
+        toast.success("Order cancelled successfully", {
+          id: toastId,
+        });
+      }
+      else {
+        toast.error("Failed to cancel order", {
+          id: toastId,
+        });
+      }
     } catch (error) {
-      console.error("Cancel failed", error);
+      toast.error("Failed to cancel order", {
+        id: toastId,
+      });
     }
   };
 

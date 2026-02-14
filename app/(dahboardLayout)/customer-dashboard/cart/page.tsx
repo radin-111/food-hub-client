@@ -26,7 +26,7 @@ export default async function CartPage({
       </p>
     </div>
   }
-  console.log(data)
+
   return <div>
     <CartItems cartItems={data?.result} navigatePage={data?.totalPages -1} />
     <Pagination2 totalPages={data?.totalPages} />
