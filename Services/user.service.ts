@@ -10,14 +10,11 @@ export const userService = {
   getSession: async function () {
     try {
       const cookieStore = await cookies();
-      const cookieHeader = await cookieStore.toString();
+
       const res = await fetch(`${AUTH_URL}/get-session`, {
         headers: {
-          Cookie: cookieHeader,
-          Origin: frontEndUrl,
-          Accept: "application/json",
+          Cookie: cookieStore.toString(),
         },
-        credentials: "include",
 
         cache: "no-store",
       });
