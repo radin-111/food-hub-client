@@ -7,9 +7,9 @@ import {
   User,
   Utensils,
   ShoppingCart,
-  
   UserCheck,
 } from "lucide-react";
+import { title } from "process";
 import { TbCategoryFilled } from "react-icons/tb";
 export const userRoutes = {
   adminRoutes: [
@@ -88,6 +88,11 @@ export const userRoutes = {
       title: "Home",
       url: "/",
       icon: Home,
+    },
+    {
+      title: "Statistics",
+      url: "/customer-dashboard",
+      icon: BarChart3,
     },
     {
       title: "Cart",
