@@ -1,3 +1,4 @@
+import ProviderDetails from "@/components/modules/Provider/ProviderDetails";
 import { env } from "@/env";
 
 
@@ -6,7 +7,8 @@ export default async function SingleProvider({
 }: {
   params: { id: string };
 }) {
-  const res = await fetch(`${env.BACKEND_URL}/provider/${params.id}`, {
+  const {id}=await params;
+  const res = await fetch(`${env.BACKEND_URL}/provider/${id}`, {
     cache: "no-store",
   });
 
@@ -19,9 +21,10 @@ if(!data) {
     </div>
   );
 }
+console.log(data)
   return (
     <div className="container mx-auto px-4 py-8 space-y-10">
-      
+      <ProviderDetails provider={data} />
     </div>
   );
 }
