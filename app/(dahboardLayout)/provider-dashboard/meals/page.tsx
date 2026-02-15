@@ -32,7 +32,7 @@ export default async function MealsPage({
   return (
     <div>
       <AddMealsForm categories={categories} />
-      <MealsTable meals={mealsData.result} />
+      <MealsTable meals={mealsData.result} categories={categories} />
       <Pagination2 totalPages={Number(mealsData.totalPages)} />
     </div>
   );

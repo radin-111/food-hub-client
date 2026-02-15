@@ -33,16 +33,17 @@ export const providerServices = {
     return data;
   },
 
-  updateMeal: async (id: string, formData: FormData) => {
+  updateMeal: async (id: string, updatedMeal: any) => {
     const cookieStore = await cookies();
     try {
       const res = await fetch(`${backendUrl}/meals/${id}`, {
         method: "PATCH",
         headers: {
           Cookie: cookieStore.toString(),
+          "Content-Type": "application/json",
         },
         credentials: "include",
-        body: formData,
+        body: JSON.stringify(updatedMeal),
       });
       const data = await res.json();
       return data;

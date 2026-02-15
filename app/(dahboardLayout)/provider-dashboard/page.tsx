@@ -14,7 +14,7 @@ export default async function ProviderDashboard() {
     credentials: "include",
   });
   const { data } = await res.json();
-  console.log(data);
+ 
   return <div>
     <ProviderStatistics data={data} />
   </div>;

@@ -24,6 +24,7 @@ import {
   FieldError,
   FieldGroup,
   FieldLabel,
+  FieldDescription,
   FieldSeparator,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
@@ -32,8 +33,13 @@ import { Button } from "@/components/ui/button";
 import { X, Eye, Trash2, Pencil } from "lucide-react";
 import { useForm } from "@tanstack/react-form";
 import * as z from "zod";
-import { deleteMeal, updateMeal } from "@/Actions/provider.action";
+import { deleteMeal, updateMeal, uploadImage } from "@/Actions/provider.action";
 import { toast } from "sonner";
+
+type Category = {
+  id: string;
+  cuisineType: string;
+};
 
 type Meal = {
   id: string;
@@ -41,34 +47,38 @@ type Meal = {
   price: number;
   description: string;
   image: string;
-  category: {
-    id: string;
-    cuisineType: string;
-  };
+  category: Category;
 };
 
 const formSchema = z.object({
-  name: z.string().min(2),
-  description: z.string().min(10, { message: "Description must be at least 10 characters long" }),
-  price: z.number(),
-  image: z.any().optional(),
+  name: z.string().min(2, "Meal name is required"),
+  description: z.string().min(10, "Description must be at least 10 characters"),
+  price: z.number().min(1, "Price must be greater than 0"),
+  categoryId: z.string().min(1, "Category is required"),
+  image: z.instanceof(File).optional(),
 });
+
 type UpdateMealFormValues = z.infer<typeof formSchema>;
-export default function MealsTable({ meals }: { meals: Meal[] }) {
+
+type UpdateMealPayload = {
+  name: string;
+  description: string;
+  price: number;
+  categoryId: string;
+  image: string;
+};
+
+export default function MealsTable({
+  meals,
+  categories,
+}: {
+  meals: Meal[];
+  categories: Category[];
+}) {
   const [viewOpen, setViewOpen] = useState(false);
   const [updateOpen, setUpdateOpen] = useState(false);
   const [selectedMeal, setSelectedMeal] = useState<Meal | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
-
-  const handleView = (meal: Meal) => {
-    setSelectedMeal(meal);
-    setViewOpen(true);
-  };
-
-  const handleUpdateOpen = (meal: Meal) => {
-    setSelectedMeal(meal);
-    setUpdateOpen(true);
-  };
 
   const handleDelete = async (mealId: string) => {
     const toastId = toast.loading("Deleting meal...");
@@ -83,52 +93,74 @@ export default function MealsTable({ meals }: { meals: Meal[] }) {
 
   const form = useForm({
     defaultValues: {
-      name: selectedMeal?.name ?? "",
-      description: selectedMeal?.description ?? "",
-      price: selectedMeal?.price ?? 0,
-      image: undefined as File | undefined,
+      name: "",
+      description: "",
+      price: 0,
+      categoryId: "",
+      image: undefined,
     } as UpdateMealFormValues,
-    validators: { onSubmit: formSchema },
+    validators: {
+      onSubmit: formSchema,
+    },
     onSubmit: async ({ value }) => {
       if (!selectedMeal) return;
-      console.log(value);
-      const formData = new FormData();
-      formData.append("name", value.name);
-      formData.append("description", value.description);
-      formData.append("price", String(value.price));
-      // if (value.image) formData.append("image", value.image);
+      const toastId = toast.loading("Updating meal...");
+      try {
+        let imageUrl = selectedMeal.image;
 
-      // const  data  = await updateMeal(selectedMeal.id, formData);
-      // console.log(data)
-      // const toastId = toast.loading("Updating meal...");
-      // if (data) {
-      //   toast.success("Meal updated successfully", { id: toastId });
-      //   setUpdateOpen(false);
-      //   setPreview(null);
-      // } else {
-      //   toast.error("Failed to update meal", { id: toastId });
-      // }
+        if (value.image instanceof File) {
+          const imageRes = await uploadImage(value.image);
+
+          if (!imageRes?.data?.url) {
+            toast.error("Image upload failed", { id: toastId });
+            return;
+          }
+
+          imageUrl = imageRes.data.url;
+        }
+
+        const payload: UpdateMealPayload = {
+          name: value.name,
+          description: value.description,
+          price: value.price,
+          categoryId: value.categoryId,
+          image: imageUrl,
+        };
+        
+        const { success } = await updateMeal(selectedMeal.id, payload as any);
+
+        if (success) {
+          toast.success("Meal updated successfully", { id: toastId });
+          setUpdateOpen(false);
+          setPreview(null);
+          form.reset();
+        } else {
+          toast.error("Failed to update meal", { id: toastId });
+        }
+      } catch {
+        toast.error("Something went wrong", { id: toastId });
+      }
     },
   });
 
   useEffect(() => {
-    if (selectedMeal) setPreview(selectedMeal.image);
-  }, [selectedMeal]);
+    if (selectedMeal && updateOpen) {
+      form.setFieldValue("name", selectedMeal.name);
+      form.setFieldValue("description", selectedMeal.description);
+      form.setFieldValue("price", selectedMeal.price);
+      form.setFieldValue("categoryId", selectedMeal.category.id);
+      setPreview(selectedMeal.image);
+    }
+  }, [selectedMeal, updateOpen]);
 
   if (meals.length === 0) {
     return (
-      <div
-        className="
-    "
-      >
-        <div className="text-center">
-          <p className="text-lg font-medium text-gray-600">
-            No meals available.
-          </p>
-        </div>
+      <div className="text-center">
+        <p className="text-lg font-medium text-gray-600">No meals available.</p>
       </div>
     );
   }
+
   return (
     <>
       <Table>
@@ -159,17 +191,25 @@ export default function MealsTable({ meals }: { meals: Meal[] }) {
                 <Button
                   size="icon"
                   variant="outline"
-                  onClick={() => handleView(meal)}
+                  onClick={() => {
+                    setSelectedMeal(meal);
+                    setViewOpen(true);
+                  }}
                 >
                   <Eye className="h-4 w-4" />
                 </Button>
+
                 <Button
                   size="icon"
                   variant="outline"
-                  onClick={() => handleUpdateOpen(meal)}
+                  onClick={() => {
+                    setSelectedMeal(meal);
+                    setUpdateOpen(true);
+                  }}
                 >
                   <Pencil className="h-4 w-4" />
                 </Button>
+
                 <Button
                   size="icon"
                   variant="destructive"
@@ -205,18 +245,6 @@ export default function MealsTable({ meals }: { meals: Meal[] }) {
 
               <p className="text-sm">{selectedMeal.description}</p>
               <p className="font-semibold">Price: {selectedMeal.price}</p>
-
-              <DialogFooter>
-                <Button
-                  size="icon"
-                  onClick={() => {
-                    setViewOpen(false);
-                    handleUpdateOpen(selectedMeal);
-                  }}
-                >
-                  <Pencil className="h-4 w-4" />
-                </Button>
-              </DialogFooter>
             </>
           )}
         </DialogContent>
@@ -230,12 +258,15 @@ export default function MealsTable({ meals }: { meals: Meal[] }) {
 
           <DialogHeader>
             <DialogTitle>Update Meal</DialogTitle>
+            <DialogDescription>
+              Update meal details including category
+            </DialogDescription>
           </DialogHeader>
 
           <form
-            onSubmit={(e: any) => {
+            onSubmit={(e) => {
               e.preventDefault();
-              form.handleSubmit(e.target);
+              form.handleSubmit();
             }}
             className="space-y-4"
           >
@@ -244,7 +275,7 @@ export default function MealsTable({ meals }: { meals: Meal[] }) {
                 name="name"
                 children={(field) => (
                   <Field>
-                    <FieldLabel>Name</FieldLabel>
+                    <FieldLabel>Meal Name</FieldLabel>
                     <Input
                       value={field.state.value}
                       onChange={(e) => field.handleChange(e.target.value)}
@@ -286,6 +317,28 @@ export default function MealsTable({ meals }: { meals: Meal[] }) {
               />
 
               <form.Field
+                name="categoryId"
+                children={(field) => (
+                  <Field>
+                    <FieldLabel>Category</FieldLabel>
+                    <select
+                      className="w-full rounded-md border px-3 py-2 text-sm"
+                      value={field.state.value}
+                      onChange={(e) => field.handleChange(e.target.value)}
+                    >
+                      <option value="">Select category</option>
+                      {categories.map((cat) => (
+                        <option key={cat.id} value={cat.id}>
+                          {cat.cuisineType}
+                        </option>
+                      ))}
+                    </select>
+                    <FieldError errors={field.state.meta.errors} />
+                  </Field>
+                )}
+              />
+
+              <form.Field
                 name="image"
                 children={(field) => (
                   <Field>
@@ -295,19 +348,20 @@ export default function MealsTable({ meals }: { meals: Meal[] }) {
                       accept="image/*"
                       onChange={(e) => {
                         const file = e.target.files?.[0];
-                        if (file) {
-                          field.handleChange(file);
-                          setPreview(URL.createObjectURL(file));
-                        }
+                        if (!file) return;
+                        field.handleChange(file);
+                        setPreview(URL.createObjectURL(file));
                       }}
                     />
                     {preview && (
                       <img
                         src={preview}
-                        alt="Preview"
                         className="mt-2 h-40 w-full rounded-md object-cover"
                       />
                     )}
+                    <FieldDescription>
+                      Upload a new image if needed
+                    </FieldDescription>
                     <FieldError errors={field.state.meta.errors} />
                   </Field>
                 )}
@@ -317,9 +371,7 @@ export default function MealsTable({ meals }: { meals: Meal[] }) {
             </FieldGroup>
 
             <DialogFooter>
-              <Button type="submit">
-                <Pencil className="h-4 w-4" />
-              </Button>
+              <Button type="submit">Update Meal</Button>
             </DialogFooter>
           </form>
         </DialogContent>
