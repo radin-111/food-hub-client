@@ -3,14 +3,14 @@ import { Button } from "@/components/ui/button";
 import Logout from "@/components/ui/Logout";
 import { authClient } from "@/lib/auth-client";
 import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
+import Image from "next/image";
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-
 export default function Session() {
   const router = useRouter();
-  
+
   const data = authClient.useSession();
   const image =
     data?.data?.user?.image ||
@@ -19,18 +19,16 @@ export default function Session() {
     <>
       {data?.data?.user ? (
         <div className=" flex gap-4 items-center">
-          <Avatar>
-            <AvatarImage
-              src={`${image}`}
+          <Avatar className="relative h-12 w-12 overflow-hidden rounded-full">
+            <Image
+              src={image}
               alt="Profile Picture"
-              width={50}
-              height={50}
-              className="rounded-full"
+              fill
+              className="object-cover"
             />
           </Avatar>
 
           <Logout />
-          
         </div>
       ) : (
         <>
