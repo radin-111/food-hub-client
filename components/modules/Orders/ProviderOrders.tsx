@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import {
   Table,
@@ -15,6 +15,20 @@ import { Button } from "@/components/ui/button";
 import { OrderStatus } from "@/Services/order.service";
 import { updateOrderStatus } from "@/Actions/order.action";
 import { toast } from "sonner";
+import { Star } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog";
+
+type Review = {
+  rating: number;
+  comment: string;
+};
 
 type Order = {
   id: string;
@@ -29,9 +43,12 @@ type Order = {
     name: string;
     price: number;
   };
+  reviews: Review[];
 };
 
 export default function ProviderOrdersTable({ orders }: { orders: Order[] }) {
+  const [openDialogOrder, setOpenDialogOrder] = useState<Order | null>(null);
+
   const handleStatusUpdate = async (id: string, newStatus: OrderStatus) => {
     const toastId = toast.loading("Updating order status...");
     try {
@@ -73,6 +90,12 @@ export default function ProviderOrdersTable({ orders }: { orders: Order[] }) {
             onClick={() => handleStatusUpdate(order.id, "DELIVERED")}
           >
             Mark as Delivered
+          </Button>
+        );
+      case "DELIVERED":
+        return (
+          <Button size="sm" onClick={() => setOpenDialogOrder(order)}>
+            View Review
           </Button>
         );
       default:
@@ -139,9 +162,7 @@ export default function ProviderOrdersTable({ orders }: { orders: Order[] }) {
                           order.status === "READY" ||
                           order.status === "DELIVERED"
                         ? "default"
-                        : order.status === "PREPARING"
-                          ? "secondary"
-                          : "secondary"
+                        : "secondary"
                   }
                 >
                   {order.status}
@@ -155,6 +176,55 @@ export default function ProviderOrdersTable({ orders }: { orders: Order[] }) {
           ))}
         </TableBody>
       </Table>
+
+    
+      {openDialogOrder && (
+        <Dialog
+          open={!!openDialogOrder}
+          onOpenChange={() => setOpenDialogOrder(null)}
+        >
+          <DialogContent className="sm:max-w-lg">
+            <DialogHeader>
+              <DialogTitle>Review for {openDialogOrder.meal.name}</DialogTitle>
+              <DialogDescription>
+                {openDialogOrder.reviews.length === 0
+                  ? ""
+                  : "Customer Feedback"}
+              </DialogDescription>
+            </DialogHeader>
+
+            <div className="flex flex-col gap-4 mt-4">
+              {openDialogOrder.reviews.length === 0 ? (
+                <p className="text-sm text-muted-foreground">
+                  No feedback yet.
+                </p>
+              ) : (
+                openDialogOrder.reviews.map((review, idx) => (
+                  <div key={idx} className="flex flex-col gap-2">
+                    <div className="flex space-x-1">
+                      {[1, 2, 3, 4, 5].map((star) => (
+                        <Star
+                          key={star}
+                          className={`h-6 w-6 ${
+                            review.rating >= star
+                              ? "text-yellow-400"
+                              : "text-gray-300"
+                          }`}
+                        />
+                      ))}
+                    </div>
+                    <p className="text-sm">{review.comment}</p>
+                  </div>
+                ))
+              )}
+            </div>
+
+            <DialogFooter>
+              <Button onClick={() => setOpenDialogOrder(null)}>Close</Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      )}
     </div>
   );
 }

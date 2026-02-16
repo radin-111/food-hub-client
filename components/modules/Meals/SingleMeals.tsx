@@ -210,13 +210,13 @@ export default function SingleMealsCard({
                   Add to Cart
                 </Button>
 
-                <Button
+                {/* <Button
                   variant="outline"
                   className="h-14 sm:h-16 flex-1 rounded-2xl border-2 border-slate-100 text-base sm:text-lg font-bold text-slate-800 transition-all hover:bg-slate-50"
                 >
                   <Zap className="mr-2 h-5 w-5 fill-orange-500 text-orange-500" />
                   Fast Buy
-                </Button>
+                </Button> */}
               </div>
 
               <p className="text-center text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.2em] text-slate-300">

@@ -211,7 +211,7 @@ export default function Profile({ user }: ProfileProps) {
 
           {user.role === "PROVIDER" && user.providerProfiles && (
             <>
-              <FieldSeparator>Restaurant Information</FieldSeparator>
+              {/* <FieldSeparator>Restaurant Information</FieldSeparator> */}
 
               {user.providerProfiles && (
                 <>
