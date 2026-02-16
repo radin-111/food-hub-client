@@ -35,7 +35,7 @@ const Navbar =  ({
           <Link href="/">
             <Logo className="text-foreground gap-3" />
           </Link>
-          <Link href="#" className="hover:text-primary max-md:hidden">
+          <Link href="/" className="hover:text-primary max-md:hidden">
             Home
           </Link>
           <Link href="/meals" className="hover:text-primary max-md:hidden">
