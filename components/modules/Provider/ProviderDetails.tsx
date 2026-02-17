@@ -36,9 +36,7 @@ type Props = {
 export default function ProviderDetails({ provider }: Props) {
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
-      {/* ================= HEADER ================= */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 border-b pb-6">
-        {/* Restaurant Info */}
         <div className="flex items-center gap-4">
           <img
             src={provider.user.image}
@@ -64,7 +62,6 @@ export default function ProviderDetails({ provider }: Props) {
           </div>
         </div>
 
-        {/* Status */}
         <div>
           <span
             className={`px-3 py-1 rounded-full text-xs font-medium ${
@@ -78,7 +75,6 @@ export default function ProviderDetails({ provider }: Props) {
         </div>
       </div>
 
-      {/* ================= MEALS ================= */}
       <div className="mt-10">
         <h2 className="text-xl font-semibold mb-6">Available Meals</h2>
 
@@ -106,10 +102,13 @@ export default function ProviderDetails({ provider }: Props) {
 
                   <div className="flex items-center justify-between pt-2">
                     <span className="font-bold text-primary">
-                      ৳ {meal.price}
+                      $ {meal.price}
                     </span>
 
-                    <Link href={`/meals/${meal.id}`} className="px-3 py-1 text-sm bg-black text-white rounded-md hover:opacity-90 transition">
+                    <Link
+                      href={`/meals/${meal.id}`}
+                      className="px-3 py-1 text-sm bg-black text-white rounded-md hover:opacity-90 transition"
+                    >
                       Order
                     </Link>
                   </div>

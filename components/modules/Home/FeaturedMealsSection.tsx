@@ -1,8 +1,11 @@
+"use client";
 import Image from "next/image";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 
 export default function FeaturedMealsSection({ meals }: { meals: any[] }) {
+  const router = useRouter();
   return (
     <section className="container mx-auto px-4 py-16">
       <h2 className="text-3xl font-bold text-center mb-10">
@@ -13,6 +16,7 @@ export default function FeaturedMealsSection({ meals }: { meals: any[] }) {
         {meals.map((meal) => (
           <Card
             key={meal.id}
+            onClick={() => router.push(`/meals/${meal.id}`)}
             className="group flex flex-col rounded-3xl overflow-hidden border border-orange-100 bg-white/80 backdrop-blur-xl shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-2"
           >
             <div className="relative h-56 w-full overflow-hidden">
@@ -43,6 +47,7 @@ export default function FeaturedMealsSection({ meals }: { meals: any[] }) {
                 </span>
 
                 <Button
+                  onClick={() => router.push(`/meals/${meal.id}`)}
                   size="sm"
                   className="rounded-full px-5 hover:scale-105 transition-transform"
                 >
