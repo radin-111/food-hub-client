@@ -16,9 +16,11 @@ export default async function Meals({
   const { data: meals } = await mealServices.getMeals(page, searchText);
 
   return (
-    <div className="max-w-8/12 mx-auto my-10">
+    <div className="bg-gradient-to-br from-orange-50 via-white to-red-50">
+     <div className="max-w-8/12 mx-auto py-10">
       <MealsCard meals={meals?.result} />
       <Pagination2 totalPages={meals?.totalPages} />
-    </div>
+    </div></div>
+   
   );
 }

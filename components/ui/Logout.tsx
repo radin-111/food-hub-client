@@ -5,8 +5,8 @@ import { Button } from "./button";
 import { useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
 
-export default function Logout({fullWidth}:{fullWidth?:boolean}) {
-    const router = useRouter();
+export default function Logout({ fullWidth }: { fullWidth?: boolean }) {
+  const router = useRouter();
   const handleSignOut = () => {
     Swal.fire({
       title: "Are you sure?",
@@ -23,11 +23,16 @@ export default function Logout({fullWidth}:{fullWidth?:boolean}) {
         await authClient.signOut();
         router.push("/");
         window.location.reload();
+        window.location.href = "/";
       }
     });
   };
   return (
-    <Button variant={"destructive"} className={fullWidth ? "w-full" : ""} onClick={() => handleSignOut()}>
+    <Button
+      variant={"destructive"}
+      className={fullWidth ? "w-full" : ""}
+      onClick={() => handleSignOut()}
+    >
       Logout
     </Button>
   );

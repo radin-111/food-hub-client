@@ -32,6 +32,19 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+  async headers() {
+    return [
+      {
+        source: "/(.*)",
+        headers: [
+          {
+            key: "x-custom-auth-header",
+            value: "true",
+          },
+        ],
+      },
+    ];
+  },
 };
 
 export default nextConfig;

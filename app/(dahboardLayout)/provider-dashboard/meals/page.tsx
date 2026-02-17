@@ -12,6 +12,7 @@ export default async function MealsPage({
 }) {
   const { page } = await searchParams;
   const cookieStore = await cookies();
+ 
   const [mealsRes, categoriesRes] = await Promise.all([
     fetch(`${env.BACKEND_URL}/meals/myMeals?page=${page}`, {
       cache: "no-store",
