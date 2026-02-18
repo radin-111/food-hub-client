@@ -30,18 +30,9 @@ const nextConfig: NextConfig = {
         source: "/api/auth/:path*",
         destination: `${env.NEXT_PUBLIC_BACKEND_URL}/api/auth/:path*`,
       },
-    ];
-  },
-  async headers() {
-    return [
       {
-        source: "/(.*)",
-        headers: [
-          {
-            key: "x-custom-auth-header",
-            value: "true",
-          },
-        ],
+        source: "/auth/:path*",
+        destination: `${env.NEXT_PUBLIC_BACKEND_URL}/auth/:path*`,
       },
     ];
   },
