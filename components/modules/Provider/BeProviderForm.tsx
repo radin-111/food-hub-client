@@ -99,7 +99,6 @@ export function BeProviderForm({
       {...props}
     >
       <FieldGroup className="space-y-6">
-        {/* Header */}
         <div className="text-center space-y-2">
           <h1 className="text-xl sm:text-2xl font-bold">Become a Provider</h1>
           <p className="text-sm sm:text-base text-muted-foreground">
@@ -107,9 +106,7 @@ export function BeProviderForm({
           </p>
         </div>
 
-        {/* Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {/* Restaurant Name */}
           <form.Field
             name="restaurantName"
             children={(field) => {
@@ -151,7 +148,6 @@ export function BeProviderForm({
             }}
           />
 
-          {/* City */}
           <form.Field
             name="city"
             children={(field) => {
@@ -193,7 +189,6 @@ export function BeProviderForm({
             }}
           />
 
-          {/* Postal Code */}
           <form.Field
             name="postalCode"
             children={(field) => {
@@ -214,7 +209,6 @@ export function BeProviderForm({
             }}
           />
 
-          {/* Website */}
           <form.Field
             name="website"
             children={(field) => {
@@ -239,7 +233,6 @@ export function BeProviderForm({
           />
         </div>
 
-        {/* Address */}
         <form.Field
           name="address"
           children={(field) => {
@@ -260,7 +253,6 @@ export function BeProviderForm({
           }}
         />
 
-        {/* Description */}
         <form.Field
           name="description"
           children={(field) => {
@@ -282,7 +274,6 @@ export function BeProviderForm({
           }}
         />
 
-        {/* Submit */}
         <Button className="w-full h-11 text-base" type="submit">
           Submit Provider Request
         </Button>

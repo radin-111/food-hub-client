@@ -102,7 +102,6 @@ export default function ProviderStatistics({ data }: { data: any }) {
                   </div>
                 </div>
 
-                {/* RIGHT SIDE */}
                 <div className="flex flex-col lg:items-end gap-2">
                   <Badge
                     className={`px-3 py-1 text-xs font-semibold ${

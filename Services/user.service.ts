@@ -1,7 +1,7 @@
 import { env } from "@/env";
 import { cookies } from "next/headers";
 
-const AUTH_URL = env.AUTH_URL;
+// const AUTH_URL = env.AUTH_URL;
 const BACKEND_URL = env.BACKEND_URL;
 const frontEndUrl = env.FRONTEND_URL;
 const imgbbKey = env.IMGBB_KEY;
@@ -11,7 +11,7 @@ export const userService = {
     try {
       const cookieStore = await cookies();
 
-      const res = await fetch(`${AUTH_URL}/get-session`, {
+      const res = await fetch(`${BACKEND_URL}/api/me`, {
         headers: {
           Cookie: cookieStore.toString(),
         },

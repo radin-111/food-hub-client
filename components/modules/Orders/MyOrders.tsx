@@ -93,9 +93,11 @@ export default function MyOrders({ orders }: { orders: Order[] }) {
     const review = {
       orderId: openDialog.id,
       mealId: openDialog.mealId,
+      providerId: openDialog.providerId,
       rating,
       comment,
     };
+
     try {
       const { success } = await submitReview(review);
       if (success) {
@@ -129,7 +131,6 @@ export default function MyOrders({ orders }: { orders: Order[] }) {
         <TableBody>
           {orders.map((order) => (
             <TableRow key={order.id}>
-              {/* Meal Info */}
               <TableCell>
                 <div className="flex items-center gap-4">
                   <div className="relative h-14 w-14 rounded-lg overflow-hidden">
@@ -243,7 +244,6 @@ export default function MyOrders({ orders }: { orders: Order[] }) {
                 </>
               ) : (
                 <>
-                  {/* Display existing reviews */}
                   {openDialog.reviews.map((review: any, idx) => (
                     <div key={idx} className="flex flex-col gap-2">
                       <div className="flex space-x-1">
