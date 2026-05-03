@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import * as d3 from "d3";
+import { toast } from "sonner";
 
 export interface DataPoint {
   name: string;
@@ -393,7 +394,7 @@ export default function D3Chart({
     }
     
     } catch (error) {
-      console.error('D3 chart rendering error:', error);
+      toast.error('D3 chart rendering error');
       // Optionally render an error message
       g.append('text')
         .attr('x', innerWidth / 2)

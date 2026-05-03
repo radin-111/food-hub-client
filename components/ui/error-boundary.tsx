@@ -1,6 +1,7 @@
 "use client";
 
 import React from 'react';
+import { toast } from "sonner";
 
 interface ErrorBoundaryState {
   hasError: boolean;
@@ -23,7 +24,7 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
   }
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-    console.error('Error caught by boundary:', error, errorInfo);
+    toast.error('An error occurred. Please try refreshing the page.');
   }
 
   render() {

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { toast } from "sonner";
 
 export default function ThreeBackground() {
   const mountRef = useRef<HTMLDivElement>(null);
@@ -13,7 +14,7 @@ export default function ThreeBackground() {
 
     // Check if THREE is available
     if (typeof window === 'undefined' || !(window as any).THREE) {
-      console.warn('THREE.js not loaded');
+      toast.warning('THREE.js not loaded');
       return;
     }
 
@@ -46,7 +47,7 @@ export default function ThreeBackground() {
       renderer.setClearColor(0x000000, 0);
       mountRef.current.appendChild(renderer.domElement);
     } catch (error) {
-      console.error('WebGL not supported:', error);
+      toast.error('WebGL not supported');
       return;
     }
 
