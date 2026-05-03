@@ -144,15 +144,22 @@
   }
   
   @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+      visibility: hidden;
+    }
     to {
       opacity: 1;
       transform: translateY(0);
+      visibility: visible;
     }
   }
   
   .glass-card {
     background: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.2);
   }
   
@@ -165,11 +172,34 @@
   
   .hover-lift {
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: transform, box-shadow;
   }
   
   .hover-lift:hover {
     transform: translateY(-8px) scale(1.02);
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Performance optimizations */
+  .gpu-accelerated {
+    transform: translateZ(0);
+    will-change: transform;
+  }
+  
+  /* Reduced motion support */
+  @media (prefers-reduced-motion: reduce) {
+    .animate-fade-in-up,
+    .hover-lift {
+      animation: none;
+      transition: none;
+    }
+  }
+  
+  /* Mobile optimizations */
+  @media (max-width: 768px) {
+    .hover-lift:hover {
+      transform: translateY(-4px) scale(1.01);
+    }
   }
 }
 
