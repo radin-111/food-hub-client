@@ -27,7 +27,7 @@ export default function RootLayout({
     <html lang="en">
       <link rel="icon" href="/image (3).jpg" sizes="any" />
       <body
-        className={`${geistSans.variable} bg-gray-50 ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gradient-to-br from-orange-50 via-white to-red-50 min-h-screen`}
       >
         {children}
         <Toaster />
